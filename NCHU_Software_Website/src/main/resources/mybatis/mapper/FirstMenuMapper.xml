@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.nchu.software.page.mapper.FirstMenuMapper">
+	 <resultMap type="com.nchu.software.page.entity.FirstMenuEntity" id="FirstMneuMap">
+		<id column="firstmenuid" property="firstMenuId"/>
+		<result column="firstmenuname" property="firstMenuName"/>
+		<result column="firstmenuurl" property="firstMenuUrl"/>
+	</resultMap>
+	<!--<cache />
+	&lt;!&ndash; 查询一级菜单列表 &ndash;&gt;-->
+	<select id="listAll" resultMap="FirstMneuMap">
+		select firstmenuid,firstmenuname,firstmenuurl from FirstLevel_Menu WHERE flag = 1
+	</select>
+
+	<select id="getFirstMenuByName" resultMap="FirstMneuMap">
+		select firstmenuid,firstmenuname,firstmenuurl from FirstLevel_Menu where firstmenuname = #{name}
+	</select>
+
+	<select id="listAllByFlag" resultMap="FirstMneuMap">
+		select firstmenuid,firstmenuname,firstmenuurl from FirstLevel_Menu where flag=#{flag}
+	</select>
+
+</mapper>

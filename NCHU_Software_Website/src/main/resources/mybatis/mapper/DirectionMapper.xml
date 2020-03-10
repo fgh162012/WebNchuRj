@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="com.nchu.software.studentEmployment.mapper.DirectionMapper">
+
+    <resultMap id="BaseMap" type="com.nchu.software.studentEmployment.entity.StuDirectEntity">
+        <id property="stuNo" column="stuno" />
+        <result property="direction" column="direction" />
+    </resultMap>
+
+    <select id="stuDirectList" resultMap="BaseMap" >
+       select stuno,direction from student_direction,direction where student_direction.direct_id = direction.id
+    </select>
+
+    <select id="directionList" resultType="com.nchu.software.studentEmployment.entity.DirectionEntity">
+       select id,direction from direction
+    </select>
+    
+    <select id="stuNoList" resultMap="BaseMap">
+   select stuno,direction from student_direction,direction where student_direction.direct_id = direction.id and direct_id = #{DirectId}
+    </select>
+
+    <insert id="insertStuAndDirecList" parameterType="java.util.List" >
+        insert into student_direction (stuno,direct_id) values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (#{item.stuNo},#{item.directId})
+        </foreach>
+    </insert>
+
+</mapper>

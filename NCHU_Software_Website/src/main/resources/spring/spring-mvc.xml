@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd">
+
+
+
+    <!-- 启动Spring MVC的注解功能，完成请求和注解POJO的映射,解决@ResponseBody乱码问题, 需要在annotation-
+    driven之前,否则乱码问题同样无法解决 -->
+    <bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter">
+        <property name="messageConverters">
+            <list>
+                <bean class="org.springframework.http.converter.StringHttpMessageConverter">
+                    <property name="supportedMediaTypes">
+                        <list>
+                            <value>text/html;charset=UTF-8</value>
+                        </list>
+                    </property>
+                </bean>
+                <bean class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
+                </bean>
+            </list>
+        </property>
+    </bean>
+
+
+
+    <!-- 登录拦截器 -->
+    <mvc:interceptors>
+        <mvc:interceptor>
+            <mvc:mapping path="/admin/**"/>
+            <bean class="com.nchu.software.manager.interceptor.LoginInterceptor"/>
+        </mvc:interceptor>
+    </mvc:interceptors>
+
+
+
+    <!--去哪扫描四大组件-->
+    <context:component-scan base-package="com.nchu.software"/>
+
+    <bean id="conversionService" class="org.springframework.format.support.FormattingConversionServiceFactoryBean">
+        <property name="converters">
+            <list>
+                <bean class="com.nchu.software.format.CustomDateConverter">
+                    <property name="datePattern" value="yyyy-MM-dd"></property>
+                </bean>
+            </list>
+        </property>
+    </bean>
+
+    <mvc:annotation-driven></mvc:annotation-driven>
+
+
+
+    <!--不拦截静态资源-->
+    <mvc:default-servlet-handler/>
+
+
+    <!--配置视图解析器-->
+    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="prefix" value="/WEB-INF/jsp/"/>
+        <property name="suffix" value=".jsp"/>
+    </bean>
+
+    <!--配置错误页面-->
+    <bean class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
+        <property name="exceptionMappings">
+            <map>
+                <entry key="ResourceNotFoundException" value="NotFoundError" />
+                <entry key="DataAccessException" value="InternalError" />
+            </map>
+        </property>
+        <property name="statusCodes">
+            <map>
+                <entry key="NotFoundError" value="404" />
+                <entry key="InternalError" value="500" />
+            </map>
+        </property>
+    </bean>
+
+    <!-- 上传拦截，如最大上传值及最小上传值 -->
+    <bean id="multipartResolver"  class="org.springframework.web.multipart.commons.CommonsMultipartResolver" >
+        <!--定义上传的最大大小，单位为byte-->
+        <property name="maxUploadSize">
+            <value>104857600</value>
+        </property>
+        <property name="maxInMemorySize">
+            <value>4096</value>
+        </property>
+        <!--指定上传的默认编码-->
+        <property name="defaultEncoding">
+            <value>utf-8</value>
+        </property>
+    </bean>
+
+
+
+</beans>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="com.nchu.software.studentEmployment.mapper.StuDirectMapper">
+
+    <resultMap id="BaseMap" type="com.nchu.software.studentEmployment.entity.StuDirectEntity">
+        <id property="stuNo" column="stuno" />
+        <result property="direction" column="direction" />
+    </resultMap>
+
+    <select id="stuDirectList" resultMap="BaseMap" >
+       select stuno,direction from student_direction
+    </select>
+</mapper>

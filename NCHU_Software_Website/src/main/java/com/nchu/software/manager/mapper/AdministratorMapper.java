@@ -1,0 +1,27 @@
+package com.nchu.software.manager.mapper;
+
+import com.nchu.software.manager.entity.AdministratorEntity;
+import org.springframework.stereotype.Repository;
+
+/**
+ * @ClassName AdministratorMapper
+ * @Description: java类作用描述
+ * @Author: 3162748949fgh
+ * @CreateDate: 2019/1/9 18:03
+ * @UpdateUser: 3162748949fgh
+ * @UpdateDate: 2019/1/9 18:03
+ * @UpdateRemark: 修改内容
+ * @Version: 1.0
+ **/
+@Repository
+public interface AdministratorMapper {
+    /**
+     * @Description //TODO 
+     * @author  taotao
+     * @param username
+     * @return  AdministratorEntity
+     * @exception 
+     * @date   2019/1/10 13:28
+    */
+    AdministratorEntity findUserByUsername(String username);
+}

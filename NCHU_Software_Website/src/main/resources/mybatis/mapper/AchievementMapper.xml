@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nchu.software.studentEmployment.mapper.AchievementMapper">
+    <resultMap id="BaseMap" type="com.nchu.software.studentEmployment.entity.StuCouEntity">
+        <id property="stuNo" column="stuno"/>
+        <result property="courseName" column="coursename"/>
+        <result property="totalResults" column="totalresults"/>
+        <result property="courseNO" column="courseno"/>
+    </resultMap>
+    <insert id="listInsert" parameterType="java.util.List" >
+        insert into achievement_info (stuNo,courseNO,experimentalResults,normalResults,
+        midtermResults,finalResults,totalResults,flag) values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (#{item.stuNo},#{item.courseNO},#{item.experimentalResults},
+            #{item.normalResults},#{item.midtermResults},#{item.finalResults},#{item.totalResults},#{item.flag})
+        </foreach>
+    </insert>
+   <select id="findStuGradesBySno" resultMap="BaseMap">
+       select distinct(coursename),totalresults,stuno,achievement_info.courseno from achievement_info,course_info where achievement_info.courseno = course_info.courseno and stuno = #{stuNo}
+   </select>
+   <!-- <select id="listAll" parameterType="int" resultType="mailboxAskHead">
+        select mailboxaskid,askname,title,context,mailboxtype,asktime,readcount,flag
+        from mailboxask where mailboxtype = #{mailboxType} and flag = #{flag} order by asktime desc
+    </select>-->
+    <select id="directionList" resultType="String">
+       select distinct(coursename),totalresults from achievement_info,course_info where achievement_info.courseno = course_info.courseno and stuno = #{stuNo}
+   </select>
+</mapper>
